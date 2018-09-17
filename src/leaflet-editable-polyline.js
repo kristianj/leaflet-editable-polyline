@@ -392,37 +392,9 @@ L.Polyline.polylineEditor = L.Polyline.extend({
                     that._reloadPolyline();
                 }, 25);
             });
+
             newPointMarker.on('contextmenu', function(event) {
-                // 1. Remove this polyline from map
-                var marker = event.target;
-                var pointNo = that._getPointNo(marker);
-                var markers = that.getPoints();
-                that._hideAll();
-
-                var secondPartMarkers = that._markers.slice(pointNo, pointNo.length);
-                that._markers.splice(pointNo, that._markers.length - pointNo);
-
-                that._reloadPolyline();
-
-                var points = [];
-                var contexts = [];
-                for(var i = 0; i < secondPartMarkers.length; i++) {
-                    var marker = secondPartMarkers[i];
-                    points.push(marker.getLatLng());
-                    contexts.push(marker.context);
-                }
-
-                console.log('points:' + points);
-                console.log('contexts:' + contexts);
-
-                // Need to know the current polyline order numbers, because 
-                // the splitted one need to be inserted immediately after:
-                var originalPolylineNo = that._map._editablePolylines.indexOf(that);
-
-                L.Polyline.PolylineEditor(points, that._options, contexts, originalPolylineNo + 1)
-                                          .addTo(that._map);
-
-                that._showBoundMarkers();
+                event.preventDefault();
             });
 
             this._markers.splice(pointNo, 0, marker);
